@@ -1,0 +1,45 @@
+import com.sun.source.doctree.SystemPropertyTree
+
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version '2.11.2'
+}
+
+group = 'ru.sberbank'
+version = '1.0-SNAPSHOT'
+
+allure {
+    report {
+        version.set("2.24.0")
+    }
+    adapter { // отвечает за появление папочки build/allure-results
+        aspectjWeaver.set(true) //обработка аннотации @Step
+        frameworks {
+            junit5 { //название фреймворка
+                adapterVersion.set("2.24.0") //версия интеграции фреймворка и Allure
+            }
+        }
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    testImplementation(
+            'org.junit.jupiter:junit-jupiter-api:5.10.1',
+            'com.codeborne:selenide:7.0.2',
+            'io.qameta.allure:allure-selenide:2.24.0',
+            'org.junit.platform:junit-platform-console-standalone:1.9.2'
+    )
+
+    testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine:5.9.0')
+
+}
+
+test {
+    useJUnitPlatform()
+    systemProperties(System.getProperties())
+}
+
